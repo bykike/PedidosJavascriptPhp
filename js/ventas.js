@@ -8,10 +8,10 @@ $(document).ready(function(){
 				monto: { required: false}
 		},
 		messages: {
-				cod_cliente: { required: "Seleccione un cliente", min:"El cliente no es v&#225;lido"},
-				factura: { required: "El número de factura no es v&#225;lido", min:"El número de factura no es v&#225;lido"},
-				cod_forma_pago: { required: "Seleccione la forma de pago", min:"La forma de pago no es v&#225;lida"},
-				monto: { required: "El monto no es v&#225;lido"}
+				cod_cliente: { required: "Seleccione un cliente", min:"El cliente no es válido"},
+				factura: { required: "El número de factura no es válido", min:"El número de factura no es válido"},
+				cod_forma_pago: { required: "Seleccione la forma de pago", min:"La forma de pago no es válido"},
+				monto: { required: "El monto no es válido"}
 		},
 		onkeyup: false,
 		submitHandler: function(form) {
@@ -66,7 +66,7 @@ function agregarRenglon(){
 	  data: $('#frm_factura').serialize(),
 	  beforeSend:
 		function(){
-			$('#div_error').html("a&ntilde;adiendo rengl&oacute;n...");
+			$('#div_error').html("añadiendo renglón...");
 		},
 	  success:
 		function(respuesta){
@@ -97,8 +97,9 @@ function buscarPrecio(id, valor){
 				$('#punit_'+ide[1]).val(respuesta);
 				$('#div_error').html("");
 			}else{
-				$('#punit_'+ide[1]).val('0');
-				$('#div_error').html('El art&iacute;culo seleccionado no tiene stock suficiente');
+				/* Anulo esta línea para poder hacer el envío con precio 0 */
+				/* $('#punit_'+ide[1]).val('0');
+				$('#div_error').html('El artículo seleccionado no tiene stock suficiente'); */
 			}
 		},
 	  error	:

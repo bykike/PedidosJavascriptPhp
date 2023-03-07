@@ -1,4 +1,35 @@
 <?php
+function enviarPedidoCorreo($mensaje)
+{
+	// Variables con los datos a enviar
+	$nombre = "Cliente 1";
+	$email = "hello@areavisual.net";
+	// $mensaje = "Hola, este es un mensaje de prueba.";
+
+	// Destinatario del correo electrónico
+	$destinatario = "hello@bykike.com";
+
+	// Asunto del correo electrónico
+	$asunto = "Mensaje desde mi sitio web";
+
+	// Cuerpo del correo electrónico
+	$cuerpo = "Nombre: " . $nombre . "\r\n";
+	$cuerpo .= "Email: " . $email . "\r\n";
+	$cuerpo .= "Mensaje: " . $mensaje . "\r\n";
+
+	// Cabeceras del correo electrónico
+	$headers = "From: " . $email . "\r\n";
+	$headers .= "Reply-To: " . $email . "\r\n";
+	$headers .= "Content-type: text/plain; charset=UTF-8\r\n";
+
+	// Enviar el correo electrónico
+	if (mail($destinatario, $asunto, $cuerpo, $headers)) {
+		echo "Correo electrónico enviado correctamente.";
+	} else {
+		echo "Error al enviar el correo electrónico.";
+	}
+}
+
 include_once('arr_productos.php');
 //Se presiono el Boton de Guardar ---- en el formulario
 if (isset($_POST['enviar']))
@@ -17,22 +48,22 @@ if (isset($_POST['enviar']))
 	}																						
 	//Validación fecha																					  
 	if (!checkdate($_POST['mes'], $_POST['dia'], $_POST['anio'])){	
-		$errores[] = 'La fecha no es v&aacute;lida';
+		$errores[] = 'La fecha no es válida';
 		$error = 1;
 	}															
 	//Validación factura 														
 	if (trim($factura) != ''){
 		if(!(int)$factura){
-			$errores[] = 'El n&uacute;mero no es v&aacute;lido';
+			$errores[] = 'El número no es válido';
 			$error = 1;
 		}
 	}else{
-		$errores[] = 'El campo de factura se encuentra vac&iacute;o';
+		$errores[] = 'El campo de factura se encuentra vacío';
 		$error = 1;
 	}				
 			
 	if(!isset($_POST['codigo']) || sizeof($_POST['codigo'])==0){
-		$errores[] = 'A&uacute;n no ha a&ntilde;adido art&iacute;culos para ser facturados';
+		$errores[] = 'Aún no ha añadido artículos para ser facturados';
 		$error = 1;
 	}
 	
@@ -42,25 +73,39 @@ if (isset($_POST['enviar']))
 		$factura = $_POST['factura'];
 		$monto = $_POST['monto'];								
 									
-		echo 'C&oacute;digo cliente: '.$cod_cliente.'<br>';
+		echo 'Código cliente: '.$cod_cliente.'<br>';
 		echo 'Fecha: '.$fecha.'<br>';
-		echo 'N&uacute;mero factura: '.$factura.'<br>';
+		echo 'Número factura: '.$factura.'<br>';
 		echo 'Total: '.$monto.'<br>';
 		echo 'Forma de pago: '.$cod_forma_pago.'<br>';
 		
 		if(isset($_POST['codigo'])){
 			echo '<table class="factura">';
-			echo '<tr><th>C&oacute;digo</th><th>Descripci&oacute;n</th><th>Precio Unit.</th><th>Subtotal</th></tr>';
+			/* echo '<tr><th>Código</th><th>Descripción</th><th>Precio Unit.</th><th>Subtotal</th></tr>';*/
+			echo '<tr><th>Producto</th><th>Unidades</th></tr>';
 			$total = 0;
-			foreach($_POST['codigo'] as $key=>$value){				
-				if($_POST['cantidad'][$key]>0 && $_POST['preciounitario'][$key]>0){
+
+			$camposPresupuesto = array();
+
+			foreach($_POST['codigo'] as $key=>$value){		
+				/* Para poder mostrar los productos seleccionados quito el precio unitario */
+				/* if($_POST['cantidad'][$key]>0 && $_POST['preciounitario'][$key]>0){ 
 					echo '<tr><td>'.$value.'</td><td>'.$productos[$value]['Nombre'].'</td><td>'.$_POST['preciounitario'][$key].'</td><td>'.$_POST['preciounitario'][$key]*$_POST['cantidad'][$key].'</td></tr>';
 					$total += $_POST['preciounitario'][$key]*$_POST['cantidad'][$key];										
+				}*/
+				if($_POST['cantidad'][$key]>0 && $_POST['preciounitario'][$key]==""){ 
+					echo '<tr><td>'.$productos[$value]['Nombre'].'</td><td>'.$_POST['cantidad'][$key].'</td></tr>';
+
+					$nombreCampo = $productos[$value]['Nombre'];
+					$nombreCantidad = $_POST['cantidad'][$key];
+					
+					$camposPresupuesto[] = array( $nombreCampo , $nombreCantidad );
 				}
 			}
 			echo '</table>';	
 		}
 		echo '<h3>Los datos de la compra se han registrado correctamente</h3>';
+		enviarPedidoCorreo($camposPresupuesto);
 	}else{
 		foreach($errores as $key=>$value)
 			echo $value.'<br>';

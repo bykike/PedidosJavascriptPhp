@@ -155,14 +155,17 @@
 					<td colspan="5" align="right">
 						<!--Imprimir documento -->
 						<form action="" method="get">
-							<input type="button" name="imprimir" value="Imprimir el pedido"  onClick="window.print();"/>
+							<input type="button" name="imprimir" value="Imprimir presupuesto"  onClick="window.print();"/>
 						</form>
 
-						<input type="submit" id="enviar" name="enviar" value="Enviar el pedido">
+						<input type="submit" id="enviar" name="enviar" value="Enviar presupuesto">
 
 					</td>
 					<hr>
-					<td colspan="5"><div id="div_error"></div></td>
+
+				</tr>
+				<tr>
+				<td colspan="5"><div id="div_error"></div></td>
 				</tr>
 			</tfoot>
 		</table>
