@@ -1,9 +1,19 @@
 <?php
-function enviarPedidoCorreo($mensaje)
+
+function enviarPedidoCorreo($recibeCamposPresupuesto)
 {
+
+	$mensaje = $recibeCamposPresupuesto;
+
+	foreach ($recibeCamposPresupuesto as $campo) {
+		$mensajeFormateado .= $campo[0] . $campo[1];
+		 }
+
+	$mensaje = $mensajeFormateado;
+
 	// Variables con los datos a enviar
 	$nombre = "Cliente 1";
-	$email = "hello@areavisual.net";
+	$email = "hello@bykike.com";
 	// $mensaje = "Hola, este es un mensaje de prueba.";
 
 	// Destinatario del correo electrónico
@@ -25,6 +35,7 @@ function enviarPedidoCorreo($mensaje)
 	// Enviar el correo electrónico
 	if (mail($destinatario, $asunto, $cuerpo, $headers)) {
 		echo "Correo electrónico enviado correctamente.";
+		echo $mensajeFormateado;
 	} else {
 		echo "Error al enviar el correo electrónico.";
 	}
