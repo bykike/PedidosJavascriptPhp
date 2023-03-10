@@ -6,7 +6,7 @@ function enviarPedidoCorreo($recibeCamposPresupuesto)
 	$mensaje = $recibeCamposPresupuesto;
 
 	foreach ($recibeCamposPresupuesto as $campo) {
-		$mensajeFormateado .= $campo[0] . $campo[1];
+		$mensajeFormateado .= "\r\nProducto: " . $campo[0] . " - Cantidad: " . $campo[1] . "\r\n";
 		 }
 
 	$mensaje = $mensajeFormateado;
